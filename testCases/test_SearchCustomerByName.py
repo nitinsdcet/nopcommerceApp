@@ -1,0 +1,46 @@
+import time
+import pytest
+# from Tools.scripts.patchcheck import status
+
+from pageObjects.LoginPage import Login
+from pageObjects.AddCustomerPage import AddCustomer
+from pageObjects.SearchCustomerPage import SearchCustomer
+from utilities.readProperties import ReadConfig
+from utilities.customLogger import LogGen
+
+
+class Test_searchCustomerByName_005:
+    baseURL = ReadConfig.getApplicationURL()
+    username = ReadConfig.getUseremail()
+    password = ReadConfig.getPassword()
+    logger = LogGen.loggen()  #logger
+
+    @pytest.mark.regression
+    def test_serachCustomerByName(self, setup):
+        self.logger.info("******SearchCustomerByName_05*************")
+        self.driver = setup
+        self.driver.get(self.baseURL)
+        self.driver.maximize_window()
+
+        self.lp = Login(self.driver)
+        self.lp.setUserName(self.username)
+        self.lp.setPassword(self.password)
+        self.lp.clickLogin()
+        self.logger.info("*******Login Successful************")
+
+        self.logger.info("**********Starting search Customer By Name ***************")
+
+        self.addcust = AddCustomer(self.driver)
+        self.addcust.clickonCustomersMenu()
+        self.addcust.clickonCustomerMenuItem()
+
+        self.logger.info("****searching customer by Name**********")
+        searchcust = SearchCustomer(self.driver)
+        searchcust.setFirstName("Victoria")
+        searchcust.setLastName("Terces")
+        searchcust.clickSearch()
+        time.sleep(5)
+        status = searchcust.searchCustomerByName("Victoria Terces")
+        assert True == status
+        self.logger.info("*******TC_SearchCustomerByName_005 Finished*********8")
+        self.driver.close()
