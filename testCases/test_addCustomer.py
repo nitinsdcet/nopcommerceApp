@@ -35,7 +35,7 @@ class Test_003_AddCustomer:
 
         self.addcust.clickonAddnew()
 
-        self.logger.info("********Providing customer info**********")
+        self.logger.info("********Providing customer information**********")
 
         self.email = random_generator() + "@gmail.com"
         self.addcust.setEmail(self.email)
